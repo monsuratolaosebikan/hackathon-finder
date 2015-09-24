@@ -25,6 +25,20 @@ function initAutocomplete() {
       return;
     }
 
+    //prints out the location entered in input box (use with eventbrite)
+    //console.log(document.getElementById("location-input").value);
+
+    $.getJSON('https://www.eventbriteapi.com/v3/events/search/?q=hackathon&location.address=' + document.getElementById("location-input").value + '&token=7QJYTPRIY6MZY2SFNIQW',function (data) {
+    	//console.log(data);
+    	hackathons = data.events;
+    	if (hackathons.length) {
+    	console.log(data.events[0].name.text);
+    }
+    else {
+    	console.log("There are no hackathons in that area");
+    }
+    });
+
     // Clear out the old markers.
     markers.forEach(function(marker) {
       marker.setMap(null);
@@ -60,3 +74,17 @@ function initAutocomplete() {
     map.fitBounds(bounds);
   });
 }
+
+var HackathonModel = function () {
+	var self = this;
+	self.ScrolltoMap = function () {
+	   // animate
+	   $('html, body').animate({
+	       scrollTop: $('#map').offset().top
+	     }, 300, function(){
+	       // when done, add hash to url
+	       window.location.hash = "#map";
+		});
+	};
+};
+

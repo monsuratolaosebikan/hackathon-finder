@@ -15,7 +15,7 @@
 			<div id="jumbo-text" class="container">
 	        <h1>Welcome to the Hackathon Finder!</h1>
 	        <p>Simply enter a location where you would like to find hackathons.</p>
-	        <p><a href="#map" id="go-to-map" class="btn btn-primary btn-lg">Ready, Set, Code!</a></p>
+	        <p><a href="#map" id="go-to-map" data-bind="click: ScrolltoMap" class="btn btn-primary btn-lg">Ready, Set, Code!</a></p>
       	</div>
       </div>
 		<input id="location-input" class="controls" type="text" placeholder="Search Preferred Hackathon Location">
@@ -27,25 +27,7 @@
 	
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAreHajLAoVN3qBsR7GOALqC69IDtUtz6w&libraries=places&callback=initAutocomplete"></script>
 <script>
-$("#go-to-map").on('click', function(e) {
-
-   // prevent default anchor click behavior
-   e.preventDefault();
-
-   // store hash
-   var hash = this.hash;
-
-   // animate
-   $('html, body').animate({
-       scrollTop: $(hash).offset().top
-     }, 300, function(){
-
-       // when done, add hash to url
-       // (default click behaviour)
-       window.location.hash = hash;
-     });
-
-});
+ko.applyBindings(new HackathonModel());
 </script>
 </body>
 </html>
