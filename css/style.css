@@ -2,7 +2,6 @@ html,body {
 	height: 100%;
 	margin: 0;
 	padding: 0;
-	background-color: #eee
 }
 
 #map {
@@ -54,10 +53,16 @@ html,body {
 }
 
 .jumbotron {
-	height: 580px;
-	margin-top: 10px;
-	padding-top: 15%;
-	margin-right: 0;
+	height: 620px;
+	background-image: url("https://snap-photos.s3.amazonaws.com/img-thumbs/960w/FSPLFPQBCZ.jpg");
+	background-size: cover;
+	color: #fff;
+	margin-bottom: 0;
+}
+
+#jumbo-text {
+	margin-top: 15%;
+	background: rgba(0, 0, 0, 0.4);
 }
 
 
