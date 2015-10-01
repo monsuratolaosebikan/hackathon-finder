@@ -32,6 +32,14 @@ html,body {
 	width: 300px;
 }
 
+#search {
+	z-index: 1;
+    position: absolute;
+    margin-left: 312px;
+    margin-top: 10px;
+    height: 32px;
+}
+
 #location-input:focus {
 	border-color: #4d90fe;
 }
