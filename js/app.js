@@ -39,12 +39,18 @@ function addMarkers(location, map) {
 function getHackathons(location) {
 $.getJSON('https://www.eventbriteapi.com/v3/events/search/?q=hackathon&location.address=' + location + '&token=7QJYTPRIY6MZY2SFNIQW',function (data) {
       hackathons = data.events;
+      var venues = [];
       if (hackathons.length) {
-      console.log(data.events[0].name.text);
-    }
+        //adds venue_id for each hackathon into an array
+        for(var i = 0; i < hackathons.length; i++){
+          venues.push(data.events[i].venue_id)
+          //console.log(data.events[i].venue_id);
+        }
+      }
     else {
       console.log("There are no hackathons in that area");
     }
+    console.log(venues);
     });
 }
 
