@@ -51,6 +51,7 @@ body {
 	max-height: 85vh;
 	padding: 0;
 	margin-bottom: 0;
+	background-color: white;
 }
  
 .filter-list li img {
