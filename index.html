@@ -2,52 +2,69 @@
 <html>
 <head>
 	<title>Hackathon Finder</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  	<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/style.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js"></script>
-
-	<script src="js/app.js"></script>
 </head>
 <body>
-	<div class="jumbotron text-center">
-			<div id="jumbo-text" class="container">
-	        <h1>Welcome to the Hackathon Finder!</h1>
-	        <p>Simply enter a location where you would like to find hackathons.</p>
-	        <p><a href="#map" id="go-to-map" class="btn btn-primary btn-lg">Ready, Set, Code!</a></p>
-      	</div>
-      </div>
-      <div class="input-group">
-      	<!--<p>Location: <strong data-bind="text: loc"></strong></p> -->
-
-		<input id="location-input" data-bind="value: loc, valueUpdate: 'blur'" class="form-control controls" type="text" placeholder="Search Preferred Hackathon Location">
-		<span class="input-group-btn">
-        <button id="search"  data-bind="click: findHackathons" class="btn btn-primary" type="button">Go!</button>
-      </span>
-	</div>
-		<div id="map"> 
+	<nav class="navbar navbar-default no-padding">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#"><i class="fa fa-laptop"></i> Hackathon Finder</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<form class="navbar-form navbar-left" role="search">
+					<div class="form-group">
+						<input id="location-input" data-bind="value: loc, valueUpdate: 'blur'" type="text" class="form-control" placeholder="Search Preferred Hackathon Location">
+					</div>
+					<button type="submit" class="btn btn-default" data-bind="click: findHackathons"><i class="fa fa-search"></i></button>
+					</form>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Filter by Month <span class="caret"></span></a>
+						<ul class="dropdown-menu" data-bind="foreach: months">
+							<li><a role="menuitem" tabindex="-1" href="#" data-bind="text: name, click: function() { $parent.filterByMonth($index()); }"></a></li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#"><i class="fa fa-question-circle fa-lg"></i></a></li>
+				</ul>
+			</div>
 		</div>
-	<footer>
-		<p>&nbsp &copy Monsurat Olaosebikan 2015</p>
-	</footer>
-	
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAreHajLAoVN3qBsR7GOALqC69IDtUtz6w&libraries=places&callback=initMapLoad"></script>
-<script>
-$("#go-to-map").on('click', function(e) {
-   // prevent default anchor click behavior
-   e.preventDefault();
-   // store hash
-   var hash = this.hash;
-   // animate
-   $('html, body').animate({
-       scrollTop: $(hash).offset().top
-     }, 300, function(){
-       // when done, add hash to url
-       // (default click behaviour)
-       window.location.hash = hash;
-     });
-});
-</script>
+	</nav>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12 no-padding">
+				<div id="map"> 
+				</div>
+				<div class="filter-list">
+					<ul>
+						<li id="list-toggle" data-bind="click: collapseList"><i id="collapse" class="fa fa-minus-circle fa-lg"></i></li>
+					</ul>
+					<ul id="hlist" data-bind="foreach: hackathonList">
+						<li data-bind="visible: showHackathon, click: function() { $parent.highlightMarker($index()); }">
+							<img class="logo" src="" data-bind="attr: {src: logo}">
+							<p data-bind="text: eventName"></p>
+							<p data-bind="text: formattedDate"></p>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js"></script>
+	<script src="js/app.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAreHajLAoVN3qBsR7GOALqC69IDtUtz6w&libraries=places">
+	</script>
 </body>
 </html>
