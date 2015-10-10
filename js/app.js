@@ -5,8 +5,11 @@ var HackathonViewModel = function () {
   var bounds;
   var autocomplete;
   var hackathons = [];
+  var noHackathons = false;
+  var currentLocation;
   self.loc = ko.observable();
   self.hackathonList = ko.observableArray();
+  self.noneFound = ko.observable();
 
   initMapLoad();
 
@@ -32,10 +35,13 @@ var HackathonViewModel = function () {
       alert("Please enter a search location")
     }
     else {
-    hackathons = [];
-    updateMap(self.loc()); 
+      hackathons = [];
+      currentLocation = self.loc();
+      updateMap(self.loc()); 
     }
   };
+
+  self.noHackathons = ko.observable(false);
 
   self.highlightMarker = function(index) {
     google.maps.event.trigger(markers[index], 'click');
@@ -47,42 +53,39 @@ var HackathonViewModel = function () {
   };
 
   self.filterByMonth = function(index) {
-    //console.log(index);
     if(index!=12){
       for(var i in hackathons) {
         if(hackathons[i].month!=index) {
           hackathons[i].showHackathon(false);
-          //Todo: hide markers
+          markers[i].setMap(null);
         }
       }
     }
     else {
         for(var j in hackathons) {
           hackathons[j].showHackathon(true);
+          markers[j].setMap(map);
         }
       }
       self.hackathonList(hackathons);
   };
 
   function initMapLoad() {
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 42.360977, lng: -71.064238},
-    zoom: 14,
-    disableDefaultUI: true
-  });
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: 42.360977, lng: -71.064238},
+      zoom: 14,
+      disableDefaultUI: true
+    });
 
-  updateMap('Boston');
+    updateMap('Boston,MA');
 
-  autocomplete = new google.maps.places.Autocomplete(
-      (document.getElementById('location-input')),
-      {types: ['geocode']});
+    autocomplete = new google.maps.places.Autocomplete((document.getElementById('location-input')),{types: ['geocode']});
 
-  // When the user selects an address from the dropdown, populate the address
-  // fields in the form.
-  autocomplete.addListener('place_changed', function() {
-    document.getElementById('location-input').focus();
-  });
-}
+    // When the user selects a location from the dropdown, populate search box
+    autocomplete.addListener('place_changed', function() {
+      document.getElementById('location-input').focus();
+    });
+  }
 
   function updateMap(location) {
     bounds = new google.maps.LatLngBounds();
@@ -108,6 +111,7 @@ var HackathonViewModel = function () {
     $.getJSON('https://www.eventbriteapi.com/v3/events/search/?q=hackathon&location.address=' + location + '&token=JWBASFKW3ABNKRUABOGW&expand=venue', function (data) {
       var hackathon = data.events;
       if (hackathon.length) {
+        self.noHackathons(false);
         for(var i in hackathon) {
           var d = new Date(hackathon[i].start.utc);
           var m = d.getMonth();
@@ -136,20 +140,22 @@ var HackathonViewModel = function () {
         self.hackathonList(hackathons);
       }
       else {
-        alert('Sorry, we could not find any hackathons in ' + location + ' :(');
+        self.hackathonList([]);
+        self.noneFound("Unfortunately, there are no hackathons in " + location + ". Check back again later or try a new search.");
+        self.noHackathons(true);
       }
+    }).fail(function(error){
+      alert("There was an error loading the hackathons, please refresh the page and try agian");
     });
   }
 
-  //adds new markers to map
+  //adds new markers to map with infowindows
   function addMarkers() {
     for(var i in hackathons) {
-      
-      
-        var hackContent = '<h4>' + hackathons[i].eventName + '</h4>' +
-        '<p>' + hackathons[i].addressName + '</p>' +
-        '<p>' + hackathons[i].formattedDate + ' | ' + hackathons[i].formattedTime + '</p>' + 
-        '<a href="' + hackathons[i].eventUrl + '">View on Eventbrite</a>';
+      var hackContent = '<h4>' + hackathons[i].eventName + '</h4>' +
+      '<p>' + hackathons[i].addressName + '</p>' +
+      '<p>' + hackathons[i].formattedDate + ' | ' + hackathons[i].formattedTime + '</p>' + 
+      '<a href="' + hackathons[i].eventUrl + '">View on Eventbrite</a>';
       
       infoWindow = new google.maps.InfoWindow({ 
         content: hackContent, 
