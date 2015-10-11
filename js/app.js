@@ -45,12 +45,13 @@ var HackathonViewModel = function () {
 
   self.highlightMarker = function(index) {
     google.maps.event.trigger(markers[index], 'click');
-  };
+  }
 
+  self.isListCollapsed = ko.observable(true);
+  
   self.collapseList = function() {
-    $("#collapse").toggleClass("fa-minus-circle fa-plus-circle");
-    $("#hlist").toggleClass("hide");
-  };
+  self.isListCollapsed(!self.isListCollapsed());
+}
 
   self.filterByMonth = function(index) {
     if(index!=12){
