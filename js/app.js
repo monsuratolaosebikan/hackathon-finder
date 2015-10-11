@@ -156,7 +156,7 @@ var HackathonViewModel = function () {
       var hackContent = '<h4>' + hackathons[i].eventName + '</h4>' +
       '<p>' + hackathons[i].addressName + '</p>' +
       '<p>' + hackathons[i].formattedDate + ' | ' + hackathons[i].formattedTime + '</p>' + 
-      '<a href="' + hackathons[i].eventUrl + '">View on Eventbrite</a>';
+      '<a href="' + hackathons[i].eventUrl + '" target="_blank">View on Eventbrite</a>';
       
       infoWindow = new google.maps.InfoWindow({ 
         content: hackContent, 
