@@ -47,8 +47,8 @@ var HackathonViewModel = function () {
     google.maps.event.trigger(markers[index], 'click');
   }
 
-  self.isListCollapsed = ko.observable(true);
-  
+  self.isListCollapsed = ko.observable(false);
+
   self.collapseList = function() {
   self.isListCollapsed(!self.isListCollapsed());
 }

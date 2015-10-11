@@ -51,7 +51,7 @@
 					<ul>
 						<li id="list-toggle" data-bind="click: collapseList"><i id="collapse" data-bind="css: { 'fa': true, 'fa-lg': true, 'fa-minus-circle': !isListCollapsed(), 'fa-plus-circle': isListCollapsed() }"></i></li>
 					</ul>
-					<ul id="hlist" data-bind="foreach: hackathonList, css: { 'hide': !isListCollapsed()}">
+					<ul id="hlist" data-bind="foreach: hackathonList, css: { 'hide': isListCollapsed()}">
 						<li data-bind="visible: showHackathon, click: function() { $parent.highlightMarker($index()); }">
 							<img class="logo" src="" data-bind="attr: {src: logo}">
 							<p data-bind="text: eventName"></p>
