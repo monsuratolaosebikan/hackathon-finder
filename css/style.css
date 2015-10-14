@@ -17,6 +17,11 @@ body {
     margin-top: 50px;
 }
 
+/*Address suggestions box*/
+.pac-container { 
+	z-index:10000 !important;
+}
+
 #search {
 	padding-top: 13px;
 	margin: auto;
