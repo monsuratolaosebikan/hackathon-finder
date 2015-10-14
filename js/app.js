@@ -1,5 +1,5 @@
 var HackathonViewModel = function () {
-	var self = this;
+  var self = this;
   var map;
   var markers = [];
   var bounds;
@@ -46,12 +46,6 @@ var HackathonViewModel = function () {
   self.highlightMarker = function(index) {
     google.maps.event.trigger(markers[index], 'click');
   }
-
-  self.isListCollapsed = ko.observable(false);
-
-  self.collapseList = function() {
-  self.isListCollapsed(!self.isListCollapsed());
-}
 
   self.filterByMonth = function(index) {
     if(index!=12){
@@ -123,7 +117,7 @@ var HackathonViewModel = function () {
             lat: hackathon[i].venue.address.latitude, 
             lng: hackathon[i].venue.address.longitude,
             addressName: hackathon[i].venue.name, 
-            logo: 'img/code28.png', 
+            logo: '', 
             eventUrl: hackathon[i].url, 
             startDate: hackathon[i].start.utc, 
             endDate: hackathon[i].end.utc,
