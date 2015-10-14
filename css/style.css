@@ -29,6 +29,11 @@ body {
 	text-align: center;
 }
 
+.input-group {
+	width: 500px;
+	z-index: 9999 !important;
+}
+
 .list {
 	background-color: white;
 	width: 25%;
@@ -110,6 +115,10 @@ body {
 		display: none;
 		width: 50%;
 	}
+
+	.input-group {
+	width: 100%;
+}
 }
 
 @media only screen and (min-width : 768px) {
