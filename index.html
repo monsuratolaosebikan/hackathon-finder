@@ -1,72 +1,70 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Hackathon Finder</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-  	<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-	<nav class="navbar navbar-default no-padding">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#"><i class="fa fa-laptop"></i> Hackathon Finder</a>
-			</div>
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	<head>
+		<title>Hackathon Finder</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	  	<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+	<body>
+		<div class="navbar navbar-custom navbar-fixed-top">
+		 	<div class="navbar-header"><a class="navbar-brand" href="#"><i class="fa fa-code"></i>&nbsp; Hackathon Finder</a>
+				<a class="navbar-toggle" data-toggle="offcanvas" data-target=".list">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</a>
+				<a id="search" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span><i class="fa fa-search fa-lg"></i><span>
+				</a>
+		    </div>
+		    <div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<form class="navbar-form navbar-left" role="search">
-					<div class="form-group">
-						<input id="location-input" data-bind="value: loc, valueUpdate: 'blur'" type="text" class="form-control" placeholder="Search Preferred Hackathon Location">
-					</div>
-					<button type="submit" class="btn btn-default" data-bind="click: findHackathons"><i class="fa fa-search"></i></button>
+					<form class="navbar-form">
+						<div class="form-group" style="display:inline;">
+							<div class="input-group">
+								<input id="location-input" data-bind="value: loc, valueUpdate: 'blur'" type="text" class="form-control" placeholder="Enter Hackathon Location">
+								<div class="input-group-btn">
+									<button type="button" class="btn btn-default" data-bind="click: findHackathons">
+										<span class="fa fa-search"></span>
+									</button>
+									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter 
+										<span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu dropdown-menu-right" data-bind="foreach: months">
+										<li>
+											<a ole="menuitem" tabindex="-1" href="#" data-bind="text: name, click: function() { $parent.filterByMonth($index()); }"></a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
 					</form>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Filter by Month <span class="caret"></span></a>
-						<ul class="dropdown-menu" data-bind="foreach: months">
-							<li><a role="menuitem" tabindex="-1" href="#" data-bind="text: name, click: function() { $parent.filterByMonth($index()); }"></a></li>
-						</ul>
-					</li>
 				</ul>
-				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#"><i class="fa fa-question-circle fa-lg"></i></a></li>
-				</ul>
-			</div>
+		    </div>
 		</div>
-	</nav>
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-12 no-padding">
-				<div class="alert alert-danger" data-bind="text: noneFound, visible: noHackathons">
-				</div>
-				<div id="map"> 
-				</div>
-				<div class="filter-list">
-					<ul>
-						<li id="list-toggle" data-bind="click: collapseList"><i id="collapse" data-bind="css: { 'fa': true, 'fa-lg': true, 'fa-minus-circle': !isListCollapsed(), 'fa-plus-circle': isListCollapsed() }"></i></li>
-					</ul>
-					<ul id="hlist" data-bind="foreach: hackathonList, css: { 'hide': isListCollapsed()}">
-						<li data-bind="visible: showHackathon, click: function() { $parent.highlightMarker($index()); }">
-							<img class="logo" src="" data-bind="attr: {src: logo}">
-							<p data-bind="text: eventName"></p>
-							<p data-bind="text: formattedDate"></p>
-						</li>
-					</ul>
-				</div>
-			</div>
+		<div id="map">
 		</div>
-	</div>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js"></script>
-	<script src="js/app.js"></script>
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAreHajLAoVN3qBsR7GOALqC69IDtUtz6w&libraries=places">
-	</script>
-</body>
+		<div class="list offcanvas">
+			<div class="alert alert-danger" data-bind="text: noneFound, visible: noHackathons">
+			</div>
+			<ul id="hlist" data-bind="foreach: hackathonList">
+				<li data-bind="visible: showHackathon, click: function() { $parent.highlightMarker($index()); }">
+					<img class="logo" src="" data-bind="attr: {src: logo}">
+					<p data-bind="text: eventName"></p>
+					<p data-bind="text: formattedDate"></p>
+				</li>
+			</ul>
+		</div>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
+		<script src="js/app.js"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAreHajLAoVN3qBsR7GOALqC69IDtUtz6w&libraries=places">
+		</script>
+	</body>
 </html>
