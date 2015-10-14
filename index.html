@@ -51,7 +51,7 @@
 			<div class="alert alert-danger" data-bind="text: noneFound, visible: noHackathons">
 			</div>
 			<ul id="hlist" data-bind="foreach: hackathonList">
-				<li data-bind="visible: showHackathon, click: function() { $parent.highlightMarker($index()); }">
+				<li data-bind="visible: showHackathon, click: function() { $parent.highlightMarker($index());}" data-toggle="collapse" data-target=".list">
 					<img class="logo" src="" data-bind="attr: {src: logo}">
 					<p data-bind="text: eventName"></p>
 					<p data-bind="text: formattedDate"></p>
