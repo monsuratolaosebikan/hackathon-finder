@@ -122,8 +122,12 @@ body {
 	}
 
 	.input-group {
-	width: 100%;
-}
+		width: 100%;
+	}
+
+	.navbar-collapse {
+		overflow-x: hidden;
+	}
 }
 
 @media only screen and (min-width : 768px) {
