@@ -1,6 +1,28 @@
+var map;
+
+function initMapLoad() {
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: 42.360977, lng: -71.064238},
+      zoom: 14,
+      disableDefaultUI: true
+    });
+
+    autocomplete = new google.maps.places.Autocomplete((document.getElementById('location-input')),{types: ['geocode']});
+
+    // When the user selects a location from the dropdown, populate search box
+    autocomplete.addListener('place_changed', function() {
+      document.getElementById('location-input').focus();
+    });
+
+    ko.applyBindings(new HackathonViewModel());
+  }
+
+function googleMapError() {
+      alert("Google Maps failed to load, make sure you're connected to the internet and try refreshing the page.");
+    }
+    
 var HackathonViewModel = function () {
   var self = this;
-  var map;
   var markers = [];
   var bounds;
   var autocomplete;
@@ -11,7 +33,8 @@ var HackathonViewModel = function () {
   self.hackathonList = ko.observableArray();
   self.noneFound = ko.observable();
 
-  initMapLoad();
+  //initialize map with hackathons in Boston
+  updateMap('Boston,MA');
 
   self.months = ko.observableArray([
     {name: 'January'},
@@ -64,23 +87,6 @@ var HackathonViewModel = function () {
       }
       self.hackathonList(hackathons);
   };
-
-  function initMapLoad() {
-    map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat: 42.360977, lng: -71.064238},
-      zoom: 14,
-      disableDefaultUI: true
-    });
-
-    updateMap('Boston,MA');
-
-    autocomplete = new google.maps.places.Autocomplete((document.getElementById('location-input')),{types: ['geocode']});
-
-    // When the user selects a location from the dropdown, populate search box
-    autocomplete.addListener('place_changed', function() {
-      document.getElementById('location-input').focus();
-    });
-  }
 
   function updateMap(location) {
     bounds = new google.maps.LatLngBounds();
@@ -182,7 +188,3 @@ var HackathonViewModel = function () {
     map.fitBounds(bounds);
   }
 }
-
-$(document).ready(function() {
-  ko.applyBindings(new HackathonViewModel());
-});
