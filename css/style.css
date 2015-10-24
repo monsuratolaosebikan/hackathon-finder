@@ -19,7 +19,7 @@ body {
 
 /*Address suggestions box*/
 .pac-container { 
-	z-index:10000 !important;
+	z-index: 10000 !important;
 }
 
 #search {
@@ -93,11 +93,11 @@ body {
 
 .navbar-custom {
 	background-color: #168ccc;
-    color:#fff;
+    color: #fff;
 }
 
 .navbar-custom li>a:hover,.navbar-custom li>a:focus {
-	background-color:#49bfff;
+	background-color: #49bfff;
 }
 
 .navbar-custom a {
