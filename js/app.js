@@ -39,7 +39,7 @@ var HackathonViewModel = function () {
 
   self.findHackathons = function() {
     if (self.loc()==undefined) {
-      alert("Please enter a search location")
+      alert("Please enter a search location");
     }
     else {
       currentLocation = self.loc();
@@ -85,7 +85,7 @@ var HackathonViewModel = function () {
     var mygeocoder = new google.maps.Geocoder();
     mygeocoder.geocode({'address' : location}, function(results, status){
       var panPoint = new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng());
-      map.panTo(panPoint)
+      map.panTo(panPoint);
     });
   }
 
@@ -104,7 +104,7 @@ var HackathonViewModel = function () {
         for(var i in hackathon) {
           var d = new Date(hackathon[i].start.utc);
           var date = d.toLocaleDateString();
-          var time = d.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});;
+          var time = d.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
           var info = {
             eventName: hackathon[i].name.text, 
             lat: hackathon[i].venue.address.latitude, 
@@ -116,7 +116,7 @@ var HackathonViewModel = function () {
             endDate: hackathon[i].end.utc,
             formattedDate: date,
             formattedTime: time,
-          }
+          };
           if(hackathon[i].logo!==null) {
             info.logo = hackathon[i].logo.url;
           }
@@ -175,4 +175,4 @@ var HackathonViewModel = function () {
     }
     map.fitBounds(bounds);
   }
-}
+};
