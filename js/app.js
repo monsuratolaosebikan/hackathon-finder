@@ -1,26 +1,26 @@
 var map;
 
 function initMapLoad() {
-    map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat: 42.360977, lng: -71.064238},
-      zoom: 14,
-      disableDefaultUI: true
-    });
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: 42.360977, lng: -71.064238},
+    zoom: 14,
+    disableDefaultUI: true
+  });
 
-    autocomplete = new google.maps.places.Autocomplete((document.getElementById('location-input')),{types: ['geocode']});
+  autocomplete = new google.maps.places.Autocomplete((document.getElementById('location-input')),{types: ['geocode']});
 
-    // When the user selects a location from the dropdown, populate search box
-    autocomplete.addListener('place_changed', function() {
-      document.getElementById('location-input').focus();
-    });
+  //When the user selects a location from the dropdown, populate search box
+  autocomplete.addListener('place_changed', function() {
+    document.getElementById('location-input').focus();
+  });
 
-    ko.applyBindings(new HackathonViewModel());
-  }
+  ko.applyBindings(new HackathonViewModel());
+}
 
 function googleMapError() {
-      alert("Google Maps failed to load, make sure you're connected to the internet and try refreshing the page.");
-    }
-    
+  alert("Google Maps failed to load, make sure you're connected to the internet and try refreshing the page.");
+}
+
 var HackathonViewModel = function () {
   var self = this;
   var markers = [];
@@ -30,35 +30,18 @@ var HackathonViewModel = function () {
   var noHackathons = false;
   var currentLocation;
   self.loc = ko.observable();
+  self.query = ko.observable("");
   self.hackathonList = ko.observableArray();
   self.noneFound = ko.observable();
 
   //initialize map with hackathons in Boston
   updateMap('Boston,MA');
 
-  self.months = ko.observableArray([
-    {name: 'January'},
-    {name: 'February'}, 
-    {name: 'March'}, 
-    {name: 'April'}, 
-    {name: 'May'}, 
-    {name: 'June'},
-    {name: 'July'},
-    {name: 'August'},
-    {name: 'September'},
-    {name: 'October'},
-    {name: 'November'},
-    {name: 'December'},
-    {name: 'Show All'}
-  ]);
-  
-
   self.findHackathons = function() {
     if (self.loc()==undefined) {
       alert("Please enter a search location")
     }
     else {
-      hackathons = [];
       currentLocation = self.loc();
       updateMap(self.loc()); 
     }
@@ -67,30 +50,36 @@ var HackathonViewModel = function () {
   self.noHackathons = ko.observable(false);
 
   self.highlightMarker = function(index) {
-    google.maps.event.trigger(markers[index], 'click');
+    google.maps.event.trigger(self.hackathonList()[index].mark, 'click');
   }
 
-  self.filterByMonth = function(index) {
-    if(index!=12){
-      for(var i in hackathons) {
-        if(hackathons[i].month!=index) {
-          hackathons[i].showHackathon(false);
-          markers[i].setMap(null);
+  self.filterHackathons = function () {
+      var filter = self.query().toLowerCase();
+
+      if (!filter) {
+        self.hackathonList(hackathons);
+        for (var i in hackathons) {
+          hackathons[i].mark.setMap(map);
         }
       }
-    }
-    else {
-        for(var j in hackathons) {
-          hackathons[j].showHackathon(true);
-          markers[j].setMap(map);
+      else {
+        self.hackathonList([]);
+        for (var j = 0; j<hackathons.length; j++) {
+          hackathons[j].mark.setMap(null);
+        }
+        for(var k in hackathons) {
+          if(hackathons[k].eventName.toLowerCase().indexOf(filter.toLowerCase()) >= 0 || hackathons[k].formattedDate.toLowerCase().indexOf(filter.toLowerCase()) >= 0) {
+            self.hackathonList.push(hackathons[k]);
+            hackathons[k].mark.setMap(map);
+          }
         }
       }
-      self.hackathonList(hackathons);
-  };
+  }
 
   function updateMap(location) {
     bounds = new google.maps.LatLngBounds();
     removeMarkers();
+    hackathons.length = 0;
     getHackathons(location);
     //pan to new location
     var mygeocoder = new google.maps.Geocoder();
@@ -102,10 +91,9 @@ var HackathonViewModel = function () {
 
   //removes old markers from map
   function removeMarkers() {
-    for (var i in markers) {
-      markers[i].setMap(null);
+    for (var i in hackathons) {
+      hackathons[i].mark.setMap(null);
     }
-    markers = [];
   }
 
   function getHackathons(location) {
@@ -115,7 +103,6 @@ var HackathonViewModel = function () {
         self.noHackathons(false);
         for(var i in hackathon) {
           var d = new Date(hackathon[i].start.utc);
-          var m = d.getMonth();
           var date = d.toLocaleDateString();
           var time = d.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});;
           var info = {
@@ -129,8 +116,6 @@ var HackathonViewModel = function () {
             endDate: hackathon[i].end.utc,
             formattedDate: date,
             formattedTime: time,
-            month: m,
-            showHackathon: ko.observable(true)
           }
           if(hackathon[i].logo!==null) {
             info.logo = hackathon[i].logo.url;
@@ -160,29 +145,32 @@ var HackathonViewModel = function () {
       
       infoWindow = new google.maps.InfoWindow({ 
         content: hackContent, 
-        maxWidth: 300 });
+        maxWidth: 300 
+      });
+
       var myLatLng = {lat: hackathons[i].lat, lng: hackathons[i].lng};
-      markers.push(new google.maps.Marker({
+      hackathons[i].mark = new google.maps.Marker({
         position: myLatLng,
         animation: google.maps.Animation.DROP,
         info: hackContent,
         map: map
-      }));
-      bounds.extend(markers[i].position);
-
-      google.maps.event.addListener( markers[i], 'click', function() {
-        infoWindow.setContent( this.info );
-        infoWindow.open( map, this );
       });
 
-       google.maps.event.addListener( markers[i], 'mouseover', function() {
+      bounds.extend(hackathons[i].mark.position);
+      
+      google.maps.event.addListener(hackathons[i].mark, 'mouseover', function() {
         this.setAnimation(google.maps.Animation.BOUNCE);
       });
 
-       google.maps.event.addListener( markers[i], 'mouseout', function() {
+       google.maps.event.addListener(hackathons[i].mark, 'mouseout', function() {
         if (this.getAnimation() !== null) {
           this.setAnimation(null);
         }
+      });
+
+       google.maps.event.addListener(hackathons[i].mark, 'click', function() {
+        infoWindow.setContent(this.info);
+        infoWindow.open(map, this);
       });
     }
     map.fitBounds(bounds);
