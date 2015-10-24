@@ -23,21 +23,17 @@
 		    <div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 					<form class="navbar-form">
-						<div class="form-group" style="display:inline;">
+						<div class="form-group">
 							<div class="input-group">
-								<input id="location-input" data-bind="value: loc, valueUpdate: 'blur'" type="text" class="form-control" placeholder="Enter Hackathon Location">
+								<input id="filter-input" data-bind="value: query, valueUpdate: 'keyup', event: { keyup:
+							filterHackathons};" type="search" class="form-control" autocomplete="off" placeholder="Search Hackathon List">
 								<div class="input-group-btn">
 									<button type="button" class="btn btn-default" data-bind="click: findHackathons">
 										<span class="fa fa-search"></span>
 									</button>
-									<!--<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter 
-										<span class="caret"></span>
+									<button type="button" class="btn btn-default" data-toggle="modal" data-target="#locationModal">
+										<span class="fa fa-location-arrow"></span>
 									</button>
-									<ul class="dropdown-menu dropdown-menu-right" data-bind="foreach: months">
-										<li>
-											<a ole="menuitem" tabindex="-1" href="#" data-bind="text: name, click: function() { $parent.filterByMonth($index()); }"></a>
-										</li>
-									</ul>-->
 								</div>
 							</div>
 						</div>
@@ -51,13 +47,37 @@
 			<div class="alert alert-danger" data-bind="text: noneFound, visible: noHackathons">
 			</div>
 			<ul id="hlist" data-bind="foreach: hackathonList">
-				<li data-bind="visible: showHackathon, click: function() { $parent.highlightMarker($index());}">
+				<li data-bind="click: function() { $parent.highlightMarker($index());}">
 					<img class="logo" src="" data-bind="attr: {src: logo}">
 					<p data-bind="text: eventName"></p>
 					<p data-bind="text: formattedDate"></p>
 				</li>
 			</ul>
 		</div>
+		<div class="modal fade" id="locationModal" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Change Hackathon Location</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<div class="input-group">
+								<input id="location-input" data-bind="value: loc, valueUpdate: 'blur'" type="text" class="form-control" placeholder="Enter Hackathon Location">
+								<div class="input-group-btn">
+									<button type="button" class="btn btn-default" data-bind="click: findHackathons">
+										<span class="fa fa-search"></span>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div> 
+			</div>
+		</div> 
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js"></script>
