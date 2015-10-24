@@ -23,7 +23,6 @@ function googleMapError() {
 
 var HackathonViewModel = function () {
   var self = this;
-  var markers = [];
   var bounds;
   var autocomplete;
   var hackathons = [];
@@ -38,7 +37,7 @@ var HackathonViewModel = function () {
   updateMap('Boston,MA');
 
   self.findHackathons = function() {
-    if (self.loc()==undefined) {
+    if (self.loc()===undefined) {
       alert("Please enter a search location");
     }
     else {
@@ -51,7 +50,7 @@ var HackathonViewModel = function () {
 
   self.highlightMarker = function(index) {
     google.maps.event.trigger(self.hackathonList()[index].mark, 'click');
-  }
+  };
 
   self.filterHackathons = function () {
       var filter = self.query().toLowerCase();
@@ -74,7 +73,7 @@ var HackathonViewModel = function () {
           }
         }
       }
-  }
+  };
 
   function updateMap(location) {
     bounds = new google.maps.LatLngBounds();
