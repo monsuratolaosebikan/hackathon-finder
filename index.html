@@ -22,17 +22,15 @@
 		    </div>
 		    <div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<form class="navbar-form">
+					<form class="navbar-form" onSubmit="return false;">
 						<div class="form-group">
 							<div class="input-group">
 								<input id="filter-input" data-bind="value: query, valueUpdate: 'keyup', event: { keyup:
-							filterHackathons};" type="search" class="form-control" autocomplete="off" placeholder="Search Hackathon List">
-								<div class="input-group-btn">
-									<button type="button" class="btn btn-default" data-toggle="modal" data-target="#locationModal">
-										<span class="fa fa-location-arrow"></span>
-									</button>
-								</div>
+								filterHackathons};" type="search" class="form-control" autocomplete="off" placeholder="Search Hackathon List by Name or Date">
 							</div>
+							<button type="button" class="btn btn-default" data-toggle="modal" data-target="#locationModal">
+								<span class="fa fa-location-arrow"></span>&nbsp; Change Location
+							</button>
 						</div>
 					</form>
 				</ul>
