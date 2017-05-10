@@ -106,8 +106,8 @@ var HackathonViewModel = function () {
           var time = d.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
           var info = {
             eventName: hackathon[i].name.text, 
-            lat: hackathon[i].venue.address.latitude, 
-            lng: hackathon[i].venue.address.longitude,
+            lat: parseFloat(hackathon[i].venue.address.latitude),
+            lng: parseFloat(hackathon[i].venue.address.longitude),
             addressName: hackathon[i].venue.name, 
             logo: '', 
             eventUrl: hackathon[i].url, 
